@@ -1,0 +1,15 @@
+To-do list for moogfest climate globe
+In rough order of urgency
+-----
+
+- Test speakers
+- Price spheres
+- Buy parts (Monday night?)
+- Build piece (Mon night, Tue night)
+- Research gridded data
+
+
+- Write audio
+- Build & mount LED component
+- Find device to play audio
+

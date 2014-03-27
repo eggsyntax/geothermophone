@@ -1,0 +1,16 @@
+Audio approach
+
+1. Figure out how to parse gridded data from CDAS.
+    - 1 file per variable. 33MB for monthly mean (for air temp, anyway). 
+        Monthly or daily? Those could actually be two separate vars.
+
+2. Write parser
+
+3. Play with Zebra to find awesomest sound ever. Maybe I should get U-he's modular one. Or ableton's BEAP. But not today.
+
+4. Output MIDI control data
+
+5. Use Pipe(?) to record that control data in Live. Save file immediately!
+
+6. Map to controls as desired.
+

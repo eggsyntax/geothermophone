@@ -1,0 +1,42 @@
+Agenda:
+
+General overview
+Scheduling
+Design review
+Physical build
+LEDs
+Parts list
+Schedule
+
+
+
+TODO:
+
+put on sketch: plywood, fire-treated IF NECESSARY
+
+3 Ports on sides
+For now at least, just use stereo (with maybe one mono signal for the third speaker)
+
+Look for power amp @ goodwill that supports >= 3 speakers and ideally
+will send line level out (headphone jack?)
+
+Kipper: where exactly installed? Level?
+--
+
+Ask Jimmy about using some of his mirrored paint
+
+
+(terms:
+    thinset
+    hardybacker
+
+- Power amp
+- Work on audio
+- Price globes
+
+
+Check angle of sides
+Email Justin inexpensive brainwave readers
+
+"Lightweight masonry surface"
+

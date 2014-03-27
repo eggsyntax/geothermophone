@@ -1,0 +1,40 @@
+Parts list:
+
+Tetrahedron:
+10', 1" pipes (steel?) x4 (how wide do they actually need to be?)
+Pressure-treated plywood - 8'x4' sheet x4
+    Ports of some sort in the sides for sound to escape
+    Probably notch in one side for power to come in
+        Some way to affix power cord to frame
+2x4s for frame (hoping someone else can do frame design)
+Spherical(?) cap for the top vertex (aesthetic and possibly reinforcing)
+Some kind of fixtures for the pipes to fit into at the bottom, for stability
+What's the bottom of the tetrahedron? Maybe just regular plywood?
+Cover (flashing?) for top of tetrahedron
+
+Globe:
+3' of chain if we go from the top of the globe
+    7' of chain if we go from the bottom
+4' plastic sphere (awaiting quotes). Probably has 5 1/4" opening.
+Some sort of reinforcement for where the chain meets the globe.
+Alternately, *maybe*, some stiffer material than chain to prevent tetherball.
+
+Sound:
+Speakers (Justin)
+Amplifier
+iPod or equivalent, with charger
+Power strip
+Extension cord
+Long audio cable to run up through pipe and down along chain
+
+LEDs:
+LED lights (8x blue, 8x red)
+Microcontroller and accessories
+How are we powering the LEDs? Do we need to run power cable to the globe also?
+LCD displays x3 to show month and year
+
+Accessories:
+Faceless but eerily attractive business-casual woman
+
+Still in question and up for discussion:
+How best to convey info to viewers?
