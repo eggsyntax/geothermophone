@@ -1,4 +1,7 @@
 '''
+Here's the key datasource: http://www.esrl.noaa.gov/psd/data/gridded/data.ncep.reanalysis.html
+Many bookmarks in Other Bookmarks/gridded _climate
+
 NOTE! Data are scaled and offset. See http://www.esrl.noaa.gov/psd/data/gridded/faq.html#2
 Same with time.
 I don't want the R2 reanalysis; it's better but doesn't go back far enough in time.
@@ -11,7 +14,13 @@ Temp is in Kelvin (but clearly has offset/scale -- raw sample temp is -34, aka -
 Wait, no, it says it's in degC (via air.units).
 Hmm. maybe no offset. air.actual range is -73..41, which in F is -99..106. Seems reasonableish.
 Per Wikipedia, min/max records are -89, 57. And these are monthly means, so they wouldn't be as extreme.
-# time slots
+
+What vars are interesting?
+Temperature, obviously.
+std dev of temp would be awesome, to show the climate getting more variable, but they only have
+	them starting in 1981. Could calculate myself, of course. We're really getting a very averaged-out
+	temperature, since we're taking monthly mean and averaging it over 1/8 of the earth. So we don't
+	get to see that side of climate change.
 '''
 from scipy.io import netcdf
 

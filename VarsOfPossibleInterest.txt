@@ -1,0 +1,22 @@
+Surface vars:
+
+Air Temperature
+Potential Temperature
+Precipitable Water Content
+Relative Humidity
+Wind Speed
+
+
+Surface flux vars:
+
+Air Temperature at 2 meters
+Ice Concentration
+Maximum Temperature
+Mimimum Temperature
+Precipitation rate
+Temperature
+Water Equiv. of Accum. Snow Depth
+Water runoff
+Zonal gravity wave stress
+Meridional gravity wave stress
+
