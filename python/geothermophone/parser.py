@@ -13,7 +13,7 @@ Dividing into 8:
 Temp is in Kelvin (but clearly has offset/scale -- raw sample temp is -34, aka -540 F)
 Wait, no, it says it's in degC (via air.units).
 Hmm. maybe no offset. air.actual range is -73..41, which in F is -99..106. Seems reasonableish.
-Per Wikipedia, min/max records are -89, 57. And these are monthly means, so they wouldn't be as extreme.
+Per Wikipedia, global min/max records are -89, 57. And these are monthly means, so they wouldn't be as extreme.
 
 What vars are interesting?
 Temperature, obviously.
@@ -21,6 +21,8 @@ std dev of temp would be awesome, to show the climate getting more variable, but
 	them starting in 1981. Could calculate myself, of course. We're really getting a very averaged-out
 	temperature, since we're taking monthly mean and averaging it over 1/8 of the earth. So we don't
 	get to see that side of climate change.
+	Ah, I can get 2-meter 4x daily temp (presumably instantaneous) from here: http://www.esrl.noaa.gov/psd/cgi-bin/db_search/DBSearch.pl?Dataset=NCEP+Reanalysis+Surface+Flux&Variable=Air+Temperature
+
 '''
 from scipy.io import netcdf
 
