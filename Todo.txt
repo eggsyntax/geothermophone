@@ -5,12 +5,8 @@ In rough order of urgency
 - Buy amplifier
 - Test speakers
 - Price spheres
-- Buy parts (Monday night?)
-- Build piece (Mon night, Tue night)
-- Research gridded data
 
-
-- Write audio
+- Write audio (See AudioToDo.txt in this dir)
 - Build & mount LED component
-- Find device to play audio
+- Find device to play audio. Celene's ipod?
 
