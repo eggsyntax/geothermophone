@@ -140,6 +140,7 @@ def _test_var(var, filename):
 	print 'lon range:', f.variables['lon'].actual_range
 	print 'lat range:', f.variables['lat'].actual_range
 	print 'apparent date:', to_datetime(f.variables['time'][0])
+	# import IPython; IPython.embed() #TD REPL
 
 def get_channel_min_max(data):
 	''' Return the min and max of each channel
@@ -168,7 +169,7 @@ def get_absolute_min_max(data):
 			max = cur_max
 	return (float(min), float(max))
 
-def normalize_relative(data, new_min=0, new_max=255, num_type=int):
+def normalize_relative(data, new_min=0, new_max=65535, num_type=int):
 	results = {}
 	channel_min_maxes = get_channel_min_max(data)
 	new_diff = new_max - new_min
@@ -210,7 +211,7 @@ def test_normalize_absolute():
 		'Normalized data (%s) does not match expected results (%s).' % (normalized_data, expected_data)
 
 def get_data(var, filename, runningAve=True):
-	# Returns a list (time) of dicts(octants) of value (wait, not true)
+	# Returns a list (time) of dicts(octants) of values
 	# Set runningAve to be true if you want to cancel out the diurnal cycle
 	f = netcdf.netcdf_file(filename, 'r')
 	data = f.variables[var]
@@ -219,18 +220,15 @@ def get_data(var, filename, runningAve=True):
 	num_lons = len(data[0])
 	num_lats = len(data[0][0])
 	oct_splitter = LonLatSplitter(num_lons, num_lats)
-	if runningAve:
-		local_starttime = starttime - timedelta(days=365)
-	else:
-		local_starttime = starttime
+	shortener = 10 #TD
 
 	for time in range(len(data.data)): #TD
 		date = f.variables['time'][time]
-		if to_datetime(date) < local_starttime or to_datetime(date) >= endtime: #TD
+		if to_datetime(date) < starttime or to_datetime(date) >= endtime: #TD
 			continue
 
 		results_for_t = {}
-		for lon in range(len(data[time])):
+		for lon in range(len(data[time])): #TD
 			for lat in range(len(data[time][lon])):
 				oct_key = oct_splitter.split_to_octs(lon, lat)
 				results_for_oct = results_for_t.setdefault(oct_key, []) # list because numpy.mean doesn't like sets
@@ -239,8 +237,13 @@ def get_data(var, filename, runningAve=True):
 					results_for_oct.append(value)
 		results.append(results_for_t)
 
+	# Now we go through and replace each set of values with its average
+	for results_for_time in results:
+		for key, results_for_oct in results_for_time.items():
+			# print type(results_for_oct)
+			results_for_time[key] = numpy.mean(results_for_oct)
 
-	# Now we reconfigure to a dict of octants, containing 8 lists of lists of
+	# Now we reconfigure to a dict of octants, containing 8 lists of average
 	# values by time.
 	keys = results[0].keys()
 	result_lists = {}
@@ -248,55 +251,20 @@ def get_data(var, filename, runningAve=True):
 		for key in keys:
 			result_lists.setdefault(key, []).append(results_for_time[key])
 
-	# Now we go through and replace each set of values with its average
-	for octant, vals in result_lists.items():
-		for i, vals_for_t in enumerate(vals):
-			vals[i] = numpy.mean(vals_for_t)
-
-	# Take a 12-month running average to cancel out annual cycle
-	if runningAve:
-		for octant, vals in result_lists.items():
-			new_vals = []
-			for t in range(12, len(vals)):
-				new_vals.append(numpy.mean(vals[t-12:t]))
-			result_lists[octant] = new_vals
-
 	# normalized_results = normalize_absolute(result_lists)
 	normalized_results = normalize_relative(result_lists)
-	return normalized_results
-
-def get_all_data():
-	''' And return it the way sonify likes it  '''
-	#TD set up a top-level function which calls get_data for each var and collates it.
-	#TD 12-month average for all vars, or no? Might be interesting to leave at least
-	#   one as the actual values.
-	#TD what we actually want as output is a file containing:
-	# - a list (each member is an octant)
-	# - containing dicts from variable (air, prate, etc) to a list of values
-
-	results_dict = {}
-	for var, filename in (
-	('air', '/Users/egg/Temp/GriddedData/air.mon.mean.nc'),
-	('prate', '/Users/egg/Temp/GriddedData/prate.sfc.mon.mean.nc',),
-	('rhum', '/Users/egg/Temp/GriddedData/rhum.mon.mean.nc'),
-	('wspd', '/Users/egg/Temp/GriddedData/wspd.mon.mean.nc'),
-	):
-		cur_results = get_data(var, filename, runningAve=True)
-		for octant, data in cur_results.items():
-			results_dict.setdefault(octant, {})[var] = data
-	results_list = []
-	for octant in sorted(results_dict.keys()):
-		results_list.append(results_dict[octant])
-	return results_list
-
+	for octant in sorted(normalized_results.keys()):
+		print 'octant:',octant
+		print normalized_results[octant]
+	# import IPython; IPython.embed() #TD REPL
 
 def test_all_vars():
 	''' Really just prints a bunch of stuff about each var, no actual tests. '''
 	for var, filename in (
-			('air', '/Users/egg/Temp/GriddedData/air.mon.mean.nc'),
+			# ('air', '/Users/egg/Temp/GriddedData/air.mon.mean.nc'),
 			('prate', '/Users/egg/Temp/GriddedData/prate.sfc.mon.mean.nc',),
-			('rhum', '/Users/egg/Temp/GriddedData/rhum.mon.mean.nc'),
-			('wspd', '/Users/egg/Temp/GriddedData/wspd.mon.mean.nc'),
+			# ('rhum', '/Users/egg/Temp/GriddedData/rhum.mon.mean.nc'),
+			# ('wspd', '/Users/egg/Temp/GriddedData/wspd.mon.mean.nc'),
 		):
 		_test_var(var, filename)
 
@@ -311,20 +279,5 @@ def test_lon_lat_splitter():
 	test_vals(72, 143, (3, 1))
 	test_vals(37, 73, (2, 1))
 
-def get_data_for_amos():
-	data = get_data('air', '/Users/egg/Temp/GriddedData/air.mon.mean.nc')
-	print_data_dict(data)
-
-def print_data_dict(data):
-	for octant in sorted(data.keys()):
-		print 'octant:',octant
-		print data[octant]
-
-def print_data_list(data):
-	''' Prints the data type that sonify wants: a list (of octants) containing
-	 dicts from variable to list of values over time. '''
-	print data
-
 if __name__ == '__main__':
-	normalized_results = get_all_data()
-	print_data_list(normalized_results)
+	get_data('air', '/Users/egg/Temp/GriddedData/air.mon.mean.nc')

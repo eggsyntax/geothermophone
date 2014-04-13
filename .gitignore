@@ -1,2 +1,4 @@
 **/.idea/
+*/*/*.pyc
+python/geothermophone/.idea/dictionaries/
 
