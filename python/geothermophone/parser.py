@@ -82,7 +82,6 @@ import math
 from scipy.io import netcdf
 import numpy
 
-shortener = 10 # TD for testing (set to 1 or delete later)
 basetime = datetime(1901, 1, 1, 0, 0, 0)
 starttime = datetime(1960, 1, 1, 0, 0, 0)
 endtime = datetime(2010, 1, 1, 0, 0, 0)
@@ -204,12 +203,12 @@ def normalize_absolute(data, new_min=0, new_max=65535, num_type=int):
 def test_normalize_absolute():
 	data = {'a': [0, 1, 2],
 	        'b': [3, 4, 5]}
-	normalized_data = normalize_absolute(data)
+	normalized_data = normalize_absolute(data, new_min=0, new_max=65535)
 	expected_data = {'a': [0.0, 13107.0, 26214.0], 'b': [39321.0, 52428.0, 65535.0]}
 	assert normalized_data == expected_data, \
 		'Normalized data (%s) does not match expected results (%s).' % (normalized_data, expected_data)
 
-def get_data(var, filename, runningAve=True):
+def get_data(var, filename, runningAve=True, relative_normalization=True):
 	# Returns a list (time) of dicts(octants) of value (wait, not true)
 	# Set runningAve to be true if you want to cancel out the diurnal cycle
 	f = netcdf.netcdf_file(filename, 'r')
@@ -224,9 +223,9 @@ def get_data(var, filename, runningAve=True):
 	else:
 		local_starttime = starttime
 
-	for time in range(len(data.data)): #TD
+	for time in range(len(data.data)):
 		date = f.variables['time'][time]
-		if to_datetime(date) < local_starttime or to_datetime(date) >= endtime: #TD
+		if to_datetime(date) < local_starttime or to_datetime(date) >= endtime:
 			continue
 
 		results_for_t = {}
@@ -261,18 +260,22 @@ def get_data(var, filename, runningAve=True):
 				new_vals.append(numpy.mean(vals[t-12:t]))
 			result_lists[octant] = new_vals
 
-	# normalized_results = normalize_absolute(result_lists)
-	normalized_results = normalize_relative(result_lists)
+	if relative_normalization:
+		normalized_results = normalize_relative(result_lists)
+	else:
+		normalized_results = normalize_absolute(result_lists)
+
 	return normalized_results
 
 def get_all_data():
 	''' And return it the way sonify likes it  '''
-	#TD set up a top-level function which calls get_data for each var and collates it.
-	#TD 12-month average for all vars, or no? Might be interesting to leave at least
+	# set up a top-level function which calls get_data for each var and collates it.
+	# 12-month average for all vars, or no? Might be interesting to leave at least
 	#   one as the actual values.
-	#TD what we actually want as output is a file containing:
+	# what we actually want as output is a file containing:
 	# - a list (each member is an octant)
 	# - containing dicts from variable (air, prate, etc) to a list of values
+    #TD: consider doing some vars with absolute normalization
 
 	results_dict = {}
 	for var, filename in (
