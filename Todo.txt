@@ -2,11 +2,7 @@ To-do list for moogfest climate globe
 In rough order of urgency
 -----
 
-- Buy amplifier
-- Test speakers
-- Price spheres
-
 - Write audio (See AudioToDo.txt in this dir)
-- Build & mount LED component
-- Find device to play audio. Celene's ipod?
+- Provide content for website
+- Get audio file onto iphone
 
