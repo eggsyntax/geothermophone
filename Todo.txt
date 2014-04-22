@@ -5,4 +5,4 @@ In rough order of urgency
 - Write audio (See AudioToDo.txt in this dir)
 - Provide content for website
 - Get audio file onto iphone
-
+- Make sure someone's handling stencil
